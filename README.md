@@ -1,26 +1,29 @@
 # AI for Inclusive Mathematics
 
-**A GenAI Tool to Tailor Early Primary Mathematics Materials for Students with Dyslexia**
+**MVP v0.3 — Bilingual Interface & DOCX Export**
 
+A GenAI tool to tailor early primary mathematics materials for students with dyslexia.
 EdUHK · EDS6019 – AI for Teaching and Learning · Group 8 – AI for SEN.
 
-## Educational problem and target users
+Production: https://ai-sen.vercel.app/
 
-Hong Kong mainstream P1–P3 mathematics teachers need to prepare differentiated materials within limited time, often without specialist SEN design expertise. This educational prototype supports the Whole School Approach to integrated education through anonymous instructional needs. It preserves the mathematics learning objective while adjusting reading load, representation and scaffolding. **AI assists. Teachers decide.**
+Existing private repository: https://github.com/sFEDszef/eduhk-ai-for-sen
 
-## Stack and local development
+## Purpose
 
-Next.js 16.3.8 stable, App Router, React 19, TypeScript, Tailwind CSS 4, Zod, native server-side fetch, npm and Git. No database, authentication, analytics or autonomous agent framework.
+Support Hong Kong P1–P3 mathematics teachers in adapting reading demands, presentation and scaffolding while retaining the learning objective and mathematical challenge. Use anonymous instructional needs only. **AI assists. Teachers decide.** All materials are AI-generated drafts requiring teacher review before classroom use.
 
-Node.js >=20.9 (Node 24 recommended):
+## Local development
+
+Next.js 16.3.8, React 19, TypeScript, Tailwind CSS 4, Zod, npm and the `docx` library. Node.js >=20.9; Node 24 recommended.
 
 ```sh
-npm install
+npm ci
 cp .env.example .env.local
 npm run dev
 ```
 
-Open http://localhost:3000. Routes: `/`, `/create`, `/about`, and server-only `POST /api/generate`.
+Open http://localhost:3000. Pages: `/`, `/create`, `/about`. Server endpoint: `POST /api/generate`.
 
 ```sh
 npm run lint
@@ -29,131 +32,84 @@ npm run build
 npm start
 ```
 
-## Environment variables
+Production builds use Next.js's Webpack option; the local sandbox previously prevented Turbopack workers from opening a port.
 
-Set these only on the server or in Vercel settings. Never use a `NEXT_PUBLIC_` key.
+## Server environment
 
-| Variable    | Meaning                                         | DeepSeek example           |
-| ----------- | ----------------------------------------------- | -------------------------- |
-| AI_PROVIDER | `deepseek`, `openai`, or `compatible`           | `deepseek`                 |
-| AI_MODEL    | Provider model identifier                       | `deepseek-chat`            |
-| AI_API_KEY  | Secret provider API key                         | Set privately              |
-| AI_BASE_URL | HTTPS API root; `/chat/completions` is appended | `https://api.deepseek.com` |
+| Variable | Purpose | DeepSeek setting |
+| --- | --- | --- |
+| AI_PROVIDER | Provider selector | `deepseek` |
+| AI_MODEL | Model identifier | `deepseek-chat` |
+| AI_BASE_URL | HTTPS root; `/chat/completions` is appended | `https://api.deepseek.com` |
+| AI_API_KEY | Secret credential | Configure privately |
 
-For OpenAI use `AI_PROVIDER=openai`, a supported Chat Completions model and `AI_BASE_URL=https://api.openai.com/v1`. Compatible providers must support JSON object responses. No API key is bundled. Missing configuration produces a clear setup message; the app never silently substitutes fabricated AI output.
+These are read at server request time. Never use a `NEXT_PUBLIC_` key, hard-code credentials or enter keys into teaching forms. OpenAI-compatible providers remain supported by the existing adapter. Missing configuration fails visibly; no fabricated response is substituted.
 
-## Generation workflow
+The linked Vercel project is **ai-sen**. Push to `main` to deploy through its existing GitHub integration; do not create another project or repository. Verify that the latest deployment is Ready and assigned to `ai-sen.vercel.app`. Environment changes require a new deployment. At the last metadata inspection the key was scoped to Production only; other environments require their own configuration.
 
-Teacher input → validation → anonymous Learner Support Profile → knowledge retrieval → pedagogy agent → content agent → review agent → structured material → teacher review.
+## Generation architecture
 
-- `lib/ai/provider.ts`: one server-only OpenAI-compatible adapter, with provider-specific defaults, HTTPS configuration checks, timeouts and safe errors. No browser access to keys.
-- `lib/knowledge/retrieval.ts`: **lightweight local RAG**. It filters documents by grade, scores topic matches, support types, output type, scaffolding and query keywords, then selects seven chunks. Objective preservation is always prioritised. Only selected chunks are injected into all three agents’ contexts. This is actual retrieval/augmentation, not one large static prompt, and does not use embeddings.
-- `lib/knowledge/data/*.json`: separate curriculum context, dyslexia, pedagogy and word-problem documents. Each includes metadata, content, source and provenance. Official summaries are paraphrases; project principles are explicitly labelled. No invented curriculum quotations or grade-level official attainment claims.
-- `lib/agents/`: three sequential TypeScript functions and an orchestrator. Standard and enhanced modes affect pedagogical detail. All three agents run in both modes. Content is rejected if objective, grade, topic or material type changes.
-- `lib/prompts/`: shared safeguards and task-specific instructions. Original questions are data, not trusted instructions; quantities and mathematical relationships must be preserved.
-- `lib/validation/schemas.ts`: input and all output schemas. The provider sends a JSON schema, extracts JSON with a fenced/prose fallback, and validates before rendering. Invalid drafts fail cleanly.
-- `app/api/generate/route.ts`: bounded input, same-origin check, server-side generation and NDJSON stages. Stage labels represent actual execution; no fake percentage. Maximum duration 300 seconds (hosting plan limits may differ).
-- `components/review/review-panel.tsx`: input summary, retrieved sources, strategies, rationale, material, teacher-only answer disclosures and automated checks. Review always remains required.
+Teacher input → Zod validation → learner support profile → local RAG → pedagogy agent → content agent → review agent → structured draft → teacher review.
+
+- `lib/knowledge/retrieval.ts` ranks and selects seven relevant chunks by objective, topic, grade and support profile. Only selected chunks enter agent contexts. This is local retrieval without embeddings or an external vector database.
+- Knowledge files distinguish official source summaries from project design principles. They are not curriculum certification.
+- All three agents execute sequentially in both Standard and Enhanced Pedagogical Support modes.
+- `lib/validation/schemas.ts` validates requests and outputs. Objective, grade, topic and material type must echo the request. Worksheet identifiers must be unique.
+- `lib/validation/math.ts` additionally checks original quantities and the first answer for simple two-quantity subtraction worksheets, including the acceptance case `43 − 18 = 25`. More complex mathematics remains subject to the review agent and teacher checking.
+- `lib/validation/language.ts` rejects Chinese or bilingual drafts missing Chinese support in the main student-facing fields. Bilingual student problems must contain both English and Chinese.
+- The provider is server-only, uses HTTPS, caps output at 6,500 tokens per agent, times out each request after 80 seconds and performs JSON extraction/schema validation. No unlimited retries.
+- The API bounds request bodies at 16,000 characters, objectives at 600 and original material at 3,000, and streams actual execution stages through NDJSON.
+- The review status remains `review_required`. Automated checks never constitute classroom approval.
+
+## Independent interface and material languages
+
+Interface: **English / 繁體中文**. Generated materials: **English / 繁體中文 / Bilingual**.
+
+`lib/i18n/en.ts` and `zh-HK.ts` provide matching typed dictionaries. A lightweight React context translates navigation, pages, labels, helper text, privacy notices, loading stages, errors and review controls. The header language choice is persisted under the versioned localStorage key `ai-sen.ui-language.v1`; blocked storage does not prevent switching. No teaching input or generated draft is persisted.
+
+The separate form field `outputLanguage` accepts `en`, `zh-HK` or `bilingual`; legacy requests default to `en`. It passes through the request schema and each agent's `teacherInput`. Prompts require British English, Hong Kong Traditional Chinese, or concise English instructions with Traditional Chinese support lines and paired vocabulary. Numbers, operations, quantities, relationships and answers must remain unchanged.
+
+`learningObjective` retains the teacher's exact input for validation. `displayLearningObjective` presents the same objective in the selected material language. Changing the interface language does not translate either user input or generated content. Retrieved source excerpts remain in their original source language; their category labels are translated.
+
+## Compact review and export
+
+The review shows input summary, retrieved knowledge, strategy, material preview, automated quality review, rationale and export actions. Worksheet previews contain title, objective, student instructions, vocabulary and the first two questions. Lesson previews show warm-up and the beginning of guided practice; game previews show materials and rules. Full drafts and detailed checks are collapsed by default. The configuration form folds away after successful generation.
+
+- **Download DOCX** submits the existing input, material and review JSON to same-origin `POST /api/export/docx`. The server validates the bounded payload and uses `lib/export/docx.ts` to return a real Word OOXML attachment. This is a formatting request only: no provider call, agent execution, saved history or database. Native HTTP attachments support browsers that do not expose completed blob downloads.
+- **Copy Content** uses the same reusable export blocks to copy the complete readable document, with feedback.
+- **Regenerate** uses the current form settings, locks concurrent submissions, disables result actions while busy and makes no automatic retry.
+- **Edit Settings** reveals the existing form without resetting fields. Arbitrary document editing is not supported.
+
+DOCX includes all questions or all lesson/game phases, differentiation, rationale, teacher notes, automated review and the teacher-review notice. Worksheets insert a page break before the teacher-only answers and notes. Export headings follow `outputLanguage`; bilingual headings pair English and Traditional Chinese. Arial and an East Asian Word font setting are referenced without bundled font files or downloads. Filenames are sanitised and capped, for example `P2_Subtraction_Worksheet_EN.docx`, `P2_減法_工作紙_ZH.docx`, and `P2_Subtraction_Worksheet_Bilingual.docx`.
+
+## Privacy and limits
+
+Do not enter student names, IDs, full IEPs, medical information or diagnostic reports. Convert relevant support recommendations into anonymous instructional needs. Inputs go to the configured external AI provider; its processing policies apply. No database, accounts, saved profiles, analytics, uploads, PDF, generated images or speech are included. `.env.local` and `.vercel/` remain ignored. Application code does not log prompts or secrets; browser rendering uses escaped text.
+
+The curated knowledge base is limited and no formal classroom evaluation has been conducted. AI can make linguistic and mathematical errors. The language guard checks for Chinese support in the main student-facing fields and rejects English sentence runs in Chinese-only mode; it does not certify translation quality or every Traditional Chinese character. The deterministic subtraction guard is deliberately narrow and cannot certify all questions or visual suggestions. Teachers must verify answers, representations and curriculum suitability. The public prototype has no durable distributed rate limit; same-origin checks are not authentication.
+
+The existing development-only ESLint dependency audit reports five entries stemming from `braces <=3.0.3`, with no patched registry version at inspection time. No forced tooling downgrade was applied.
+
+## Tests and development history
+
+The 30-test suite covers provider boundaries and protocol, route validation, retrieval, JSON/schema handling, all three material workflows, objective drift, dictionary coverage, language request propagation, original subtraction integrity, filename sanitisation, export-route validation and its no-AI-call guarantee, and real DOCX archive/content generation for three material types in three language modes. Fixture tests do not establish live model correctness; production acceptance runs are separately performed.
+
+### v0.3 production acceptance (2026-10-06)
+
+- `npm run lint`, `npm test` (30/30), and `npm run build`: passed after the final DOCX pagination correction.
+- Live DeepSeek P2 worksheet generation passed separately in English, Hong Kong Traditional Chinese and bilingual mode. Every original problem retained `43 − 18 = 25`, the exact requested objective, seven retrieved chunks, the three-agent workflow and `review_required`. All five worksheet answers in each final run were independently recomputed.
+- The live bilingual result was downloaded through the production browser's **Download DOCX** button. The final 15,975-byte file is a valid OOXML ZIP, contains all five questions and teacher answers, a teacher-section page break, and the review-required notices. Its 13 rendered pages were visually checked with installed system fonts; notices remain together. This is not a Microsoft Word application test.
+- English and Chinese live drafts were also exported through the production route and their archives/content verified. Lesson/game exports in all three languages are fixture-tested; this phase's live language acceptance used worksheets.
+- Production Home, Create and About language switching, compact two-question preview, collapsed full draft, preserved Edit Settings, regeneration busy state and completion, and Copy Content feedback were checked. Browser clipboard contents could not be independently read through the test tool's virtual clipboard; complete plain-text export is covered by automated tests.
+- Desktop (1280 × 900) and mobile (390 × 844) rendering had no horizontal overflow or browser console errors. Production request metadata showed successful generation/export requests and no runtime error records during the acceptance window.
+
+- **v0.1:** Initial application, local RAG and agent architecture.
+- **v0.2:** Live DeepSeek integration and production validation; original P2 subtraction preserved `43 − 18 = 25`. Temporary diagnostic routes removed.
+- **v0.3:** English / Traditional Chinese UI, multilingual material generation, compact review and DOCX export.
+
+Earlier production diagnosis and deployment timing evidence: [production-ai-diagnosis.md](docs/production-ai-diagnosis.md). The older [live-validation.md](docs/live-validation.md) describes the historical pre-key state.
 
 ## Knowledge sources
 
 - [EDB primary mathematics resources](https://www.edb.gov.hk/en/curriculum-development/kla/ma/res/pri/index.html)
 - [EDB SENSE dyslexia support measures](https://sense.edb.gov.hk/en/types-of-special-educational-needs/specific-learning-difficulties/support-measures.html)
-
-Entries were curated for this prototype on 6 October 2026. Teachers must confirm current curriculum sequencing and local applicability. The knowledge base is not an official curriculum database or a certified evidence synthesis.
-
-## Privacy and security
-
-Do not enter student names, IDs, full IEPs, medical information, diagnostic reports or other identifying information. Translate relevant IEP recommendations into anonymous instructional needs. Inputs are transmitted to the configured external provider; that provider’s retention and processing policies apply. This app has no database and no saved student profiles. Application code does not log prompts or secrets. React safely renders text, with no raw HTML injection. `.env.local` and `.vercel` are ignored by Git.
-
-There is no account system or durable distributed rate limit in V1. Before broadly sharing an API-enabled deployment, set provider spending limits and hosting-level abuse controls. Same-origin validation is a browser safeguard, not authentication. Do not put API keys into submitted form fields.
-
-## Deployment to Vercel
-
-Production: https://ai-sen.vercel.app/
-
-Private repository: https://github.com/sFEDszef/eduhk-ai-for-sen
-
-
-1. Push this repository to a **private** GitHub repository named `eduhk-ai-for-sen`.
-2. In Vercel, choose **Add New → Project**, import that repository and accept the Next.js preset. If using this standalone repo, the root is `.`.
-3. Add `AI_PROVIDER`, `AI_MODEL`, `AI_API_KEY`, `AI_BASE_URL` to Production (and Preview if required). Keep the key secret.
-4. Deploy. After changing variables, open Deployments → the latest deployment → **Redeploy**. Existing deployments do not inherit new values automatically.
-
-Alternatively, authenticated CLI: `vercel link`, configure variables privately, then `vercel --prod`. No credentials are committed. Without a key, pages work but real generation awaits configuration.
-
-## Testing and limitations
-
-`npm test` exercises invalid inputs, metadata retrieval, JSON fallback/schema failures, all three orchestration branches with an injected test provider, and objective-drift rejection. These tests do not prove live LLM correctness. Browser QA should cover home, create, validation, missing-key errors, desktop/mobile, and all structured review renderers using clearly labelled test fixtures. A live provider run must be separately verified after an API key is configured.
-
-This is a prototype with a small curated knowledge base, English output and no formal classroom evaluation. AI can produce wrong answers and hallucinations; automated AI review can miss them. Neither diagnosis nor SEN assessment nor IEP generation is supported. Suggestions for visuals and verbal prompts require teacher implementation. The tool does not replace teacher judgement.
-
-Future development: expand verified official curriculum mappings, larger knowledge corpus, semantic retrieval, optional document ingestion, other subjects, teacher feedback, material export and classroom evaluation. The best next step is a teacher-supervised evaluation of real generated drafts after configuring a provider key.
-
-## Verified local status (6 October 2026)
-
-- `npm install`, `npm run lint`, `npm test` (10 tests) and `npm run build` passed.
-- Build uses Next.js's supported Webpack option because Turbopack's CSS worker could not bind a local port in this execution environment.
-- Playwright checked the production app at 1440×1000 and 390×844: home, navigation, required input, missing-key error, invalid API input, all three review renderers with test fixtures, no mobile horizontal overflow and no relevant console errors. Screenshots were inspected for layout, typography, spacing, colours and form/review readability. No AI image generation was used, as excluded from V1.
-- Client build assets contain no `AI_API_KEY`, `AI_BASE_URL` or test credential string.
-- `npm audit --omit=dev`: zero production vulnerabilities. Full audit reported five high-severity entries stemming from the ESLint tooling's `braces <=3.0.3` dependency; registry latest was still 3.0.3. No forced downgrade of Next.js tooling was applied.
-- GitHub CLI was authenticated through the signed-in browser. The private repository `https://github.com/sFEDszef/eduhk-ai-for-sen` was created and all commits were pushed to `main`; remote HEAD matched local HEAD. Vercel import and production deployment succeeded through the signed-in browser at https://ai-sen.vercel.app/. `AI_PROVIDER`, `AI_MODEL` and `AI_BASE_URL` were configured for Production and Preview; `AI_API_KEY` is still awaiting configuration.
-- Provider protocol and error handling were tested with intercepted fetch responses. **No live LLM request has been verified**, because no API key was supplied.
-
-### Authentication in this execution environment
-
-GitHub CLI was obtained from its official release into temporary storage:
-```sh
-/tmp/eduhk-tools/gh_2.102.0_macOS_arm64/bin/gh auth login
-```
-After authentication, run from this project directory:
-```sh
-/tmp/eduhk-tools/gh_2.102.0_macOS_arm64/bin/gh repo create eduhk-ai-for-sen --private --source=. --remote=origin --push
-```
-If this temporary CLI has been removed, install GitHub CLI and use `gh` in place of the absolute path.
-
-The desktop bundle provides Node.js, and npm was downloaded to temporary storage. To run here while that tooling is present:
-```sh
-export PATH="/Users/lsn666/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/bin:$PATH"
-node /tmp/eduhk-tools/package/bin/npm-cli.js run dev
-```
-Vercel CLI was checked using:
-```sh
-node /tmp/eduhk-tools/package/bin/npm-cli.js exec --yes --package=vercel -- vercel whoami
-```
-Use the same command with `login` in place of `whoami` to authenticate, then import the private GitHub repository and configure the four environment variables as described above.
-
-
-## Development milestones
-
-### v0.1 — implemented and deployed
-- Teacher UI, local RAG, three-agent architecture and structured review rendering.
-- Production deployment: https://ai-sen.vercel.app/.
-- Private GitHub repository remains `sFEDszef/eduhk-ai-for-sen`.
-
-### v0.2 — Live AI Integration (verified)
-- Production runtime reads all four AI configuration variables.
-- DeepSeek connectivity returned HTTP 200 and `API_OK`.
-- The fixed P2 case completed real local RAG → pedagogy → content → review → teacher UI on https://ai-sen.vercel.app/.
-- Five worksheet answers were independently checked; the original `43 − 18` remained `25` and all questions retained two-digit subtraction within 100.
-- The automated review remained `review_required`; teacher review is still mandatory.
-- Temporary diagnostic routes were removed after testing.
-
-The production key is configured. It is never printed or committed. The audit found it currently scoped to Production only; Preview/Development live generation require their own configuration if wanted.
-
-## ai-sen rename and live-validation preparation (6 October 2026)
-The existing Vercel project was renamed to `ai-sen`; its project ID, GitHub integration and deployment history were preserved. This directory is now linked to that existing project. `ai-sen.vercel.app` was connected to Production and verified in the browser. The original `eduhk-ai-for-sen.vercel.app` alias remains available.
-
-Production variable metadata showed `AI_PROVIDER`, `AI_MODEL`, and `AI_BASE_URL` configured; `AI_API_KEY` was missing. No secret values were displayed. Add the key yourself in [Vercel Environment Variables](https://vercel.com/sfedszef/ai-sen/settings/environment-variables), select Production, Preview and Development, and redeploy before live testing. Never paste the key into a chat or commit it. Both `.env.local` and `.vercel/` remain ignored.
-
-The fixed acceptance case was submitted on the new production domain; it returned the expected missing-key configuration message before any agent call. Its local retrieval metadata and the remaining acceptance checks are recorded in [docs/live-validation.md](docs/live-validation.md).
-
-The provider audit confirmed server-only calls, environment-based selection, 80-second request timeout, 6,500-token per-call cap, JSON extraction/schema validation, safe provider errors and no automatic retry loop. Input limits remain 600 characters for the objective, 3,000 for original material, and 16,000 for the request body. No accounts, database or new UI features were added.
-
-Dedicated **Regenerate**, **Edit material**, **Copy**, and **Back to Settings** buttons are not implemented in V1. Teachers can change the input fields and manually submit the existing Generate button again; generated material is not directly editable and has no dedicated copy/export action.
-
-
-## Production missing-key diagnosis (6 October 2026)
-See [docs/production-ai-diagnosis.md](docs/production-ai-diagnosis.md) for the actual deployment timeline, runtime check, connectivity result, worksheet arithmetic and safe production log checks.
-
-The error originated in `lib/ai/provider.ts`: `const key = process.env.AI_API_KEY; if (!key)`. Configuration is read at request time, inside a server-only module. No alternative key name or client-side secret check was found. The recorded missing-key responses came from the old deployment while the new environment-configured deployment was still building. Current production runtime and live generation were verified successfully; no replacement key was requested and no provider switch was made.
