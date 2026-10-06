@@ -1,0 +1,2 @@
+import CreateForm from "@/components/forms/create-form";
+export default function Create(){return <main id="main" className="workspace"><div className="page-heading"><div><h1>Create adapted<br/><em>maths material.</em></h1><p>Start with the learning objective. Shape the support around it.</p></div><p className="teacher-principle">AI assists.<br/><strong>Teachers decide.</strong></p></div><CreateForm/></main>}

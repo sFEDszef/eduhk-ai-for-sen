@@ -1,0 +1,90 @@
+[
+  {
+    "id": "hk-context",
+    "category": "Curriculum context",
+    "grade": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "topic": [
+      "all"
+    ],
+    "supportType": [
+      "all"
+    ],
+    "outputType": [
+      "worksheet",
+      "lesson_plan",
+      "game_activity"
+    ],
+    "scaffolding": [
+      "Low",
+      "Medium",
+      "High"
+    ],
+    "content": "EDB provides primary mathematics resources and learning/teaching examples. Teachers should verify their school sequence and the applicable official curriculum. This knowledge base does not establish grade-specific official attainment requirements.",
+    "source": "EDB primary mathematics resources",
+    "provenance": "official_source_summary",
+    "sourceUrl": "https://www.edb.gov.hk/en/curriculum-development/kla/ma/res/pri/index.html"
+  },
+  {
+    "id": "objective-preservation",
+    "category": "Objective preservation",
+    "grade": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "topic": [
+      "all"
+    ],
+    "supportType": [
+      "reading"
+    ],
+    "outputType": [
+      "worksheet",
+      "lesson_plan",
+      "game_activity"
+    ],
+    "scaffolding": [
+      "Low",
+      "Medium",
+      "High"
+    ],
+    "content": "Keep the teacher\u2019s mathematical learning objective, numbers and relationships. Reading support must not automatically reduce two-digit subtraction to single-digit subtraction. If grade and objective appear inconsistent, flag this for teacher review instead of silently changing the objective.",
+    "source": "Project design principle",
+    "provenance": "project_design_principle"
+  },
+  {
+    "id": "place-value",
+    "category": "Mathematical representation",
+    "grade": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "topic": [
+      "Addition",
+      "Subtraction",
+      "Number Sense"
+    ],
+    "supportType": [
+      "visual",
+      "manipulatives"
+    ],
+    "outputType": [
+      "worksheet",
+      "lesson_plan",
+      "game_activity"
+    ],
+    "scaffolding": [
+      "Low",
+      "Medium",
+      "High"
+    ],
+    "content": "Align digits by place value. Use tens/ones counters or a number line appropriate to the original number range. Explain regrouping explicitly when the objective calls for it.",
+    "source": "Project design principle",
+    "provenance": "project_design_principle"
+  }
+]

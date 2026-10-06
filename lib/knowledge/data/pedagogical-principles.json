@@ -1,0 +1,86 @@
+[
+  {
+    "id": "differentiate",
+    "category": "Differentiated instruction",
+    "grade": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "topic": [
+      "all"
+    ],
+    "supportType": [
+      "all"
+    ],
+    "outputType": [
+      "worksheet",
+      "lesson_plan",
+      "game_activity"
+    ],
+    "scaffolding": [
+      "Low",
+      "Medium",
+      "High"
+    ],
+    "content": "Keep the same mathematics objective. Vary scaffolding, instruction complexity, visual support, response modes and presentation rather than reducing mathematical challenge.",
+    "source": "Project design principle",
+    "provenance": "project_design_principle"
+  },
+  {
+    "id": "explicit",
+    "category": "Explicit instruction",
+    "grade": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "topic": [
+      "all"
+    ],
+    "supportType": [
+      "instructions",
+      "scaffolding"
+    ],
+    "outputType": [
+      "lesson_plan",
+      "game_activity"
+    ],
+    "scaffolding": [
+      "Low",
+      "Medium",
+      "High"
+    ],
+    "content": "Use clear directions, explicit teacher modelling, predictable steps, guided practice, then independent practice. Include checks for understanding.",
+    "source": "Project design principle",
+    "provenance": "project_design_principle"
+  },
+  {
+    "id": "small-steps",
+    "category": "Small-step scaffolding",
+    "grade": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "topic": [
+      "all"
+    ],
+    "supportType": [
+      "scaffolding",
+      "instructions"
+    ],
+    "outputType": [
+      "worksheet",
+      "lesson_plan",
+      "game_activity"
+    ],
+    "scaffolding": [
+      "Medium",
+      "High"
+    ],
+    "content": "High scaffolding provides more intermediate steps and hints. Low scaffolding leaves room for independent work. Gradually fade support without changing the learning objective.",
+    "source": "Project design principle",
+    "provenance": "project_design_principle"
+  }
+]

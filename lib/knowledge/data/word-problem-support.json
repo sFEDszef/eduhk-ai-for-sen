@@ -1,0 +1,67 @@
+[
+  {
+    "id": "word-structure",
+    "category": "Word-problem representation",
+    "grade": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "topic": [
+      "Word Problems",
+      "Addition",
+      "Subtraction",
+      "Multiplication",
+      "Division",
+      "Money",
+      "Time",
+      "Measurement"
+    ],
+    "supportType": [
+      "reading",
+      "visual",
+      "scaffolding"
+    ],
+    "outputType": [
+      "worksheet",
+      "lesson_plan",
+      "game_activity"
+    ],
+    "scaffolding": [
+      "Low",
+      "Medium",
+      "High"
+    ],
+    "content": "Identify what is known, what changes, and what is asked. Separate information into short sentences. Use a labelled diagram if appropriate. Never choose an operation solely from a keyword; explain the mathematical relationship.",
+    "source": "Project design principle",
+    "provenance": "project_design_principle"
+  },
+  {
+    "id": "adapt-original",
+    "category": "Existing material adaptation",
+    "grade": [
+      "P1",
+      "P2",
+      "P3"
+    ],
+    "topic": [
+      "all"
+    ],
+    "supportType": [
+      "reading"
+    ],
+    "outputType": [
+      "worksheet",
+      "lesson_plan",
+      "game_activity"
+    ],
+    "scaffolding": [
+      "Low",
+      "Medium",
+      "High"
+    ],
+    "content": "When adapting an original question, retain its quantities, units and mathematical relationships in the first adapted task. Verify the numerical answer separately. Other practice tasks should maintain comparable mathematical challenge.",
+    "source": "Project design principle",
+    "provenance": "project_design_principle"
+  }
+]
