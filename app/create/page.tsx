@@ -1,21 +1,16 @@
+"use client";
 import CreateForm from "@/components/forms/create-form";
+import { useLanguage } from "@/components/i18n/language-provider";
 export default function Create() {
+  const { t } = useLanguage();
   return (
     <main id="main" className="workspace">
       <div className="page-heading">
         <div>
-          <h1>
-            Create adapted
-            <br />
-            <em>maths material.</em>
-          </h1>
-          <p>Start with the learning objective. Shape the support around it.</p>
+          <h1>{t("createHeading")}</h1>
+          <p>{t("createIntro")}</p>
         </div>
-        <p className="teacher-principle">
-          AI assists.
-          <br />
-          <strong>Teachers decide.</strong>
-        </p>
+        <p className="teacher-principle">{t("motto")}</p>
       </div>
       <CreateForm />
     </main>

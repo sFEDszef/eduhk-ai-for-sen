@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { LanguageProvider } from "@/components/i18n/language-provider";
+import SiteShell from "@/components/i18n/site-shell";
 import "./globals.css";
 export const metadata: Metadata = {
   title: "AI for Inclusive Mathematics | EdUHK",
@@ -12,30 +13,9 @@ export default function Layout({
   return (
     <html lang="en">
       <body>
-        <a className="skip" href="#main">
-          Skip to content
-        </a>
-        <header className="header">
-          <Link href="/" className="brand">
-            <span className="brand-mark" aria-hidden="true">
-              ＋
-            </span>
-            <span>
-              Inclusive Maths<small>EdUHK · AI for SEN</small>
-            </span>
-          </Link>
-          <nav aria-label="Main navigation">
-            <Link href="/about">About the project</Link>
-            <Link href="/create" className="button small">
-              Create material <span aria-hidden="true">↗</span>
-            </Link>
-          </nav>
-        </header>
-        {children}
-        <footer>
-          <span>Group 8 – AI for SEN · EDS6019</span>
-          <span>AI assists. Teachers decide.</span>
-        </footer>
+        <LanguageProvider>
+          <SiteShell>{children}</SiteShell>
+        </LanguageProvider>
       </body>
     </html>
   );

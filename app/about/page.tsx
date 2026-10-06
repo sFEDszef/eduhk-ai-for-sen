@@ -1,73 +1,47 @@
+"use client";
 import Link from "next/link";
+import { useLanguage } from "@/components/i18n/language-provider";
 export default function About() {
+  const { t } = useLanguage();
   return (
     <main id="main" className="narrow">
-      <h1>
-        Inclusive design.
-        <br />
-        <em>Teacher judgement.</em>
-      </h1>
-      <p className="lead">
-        This prototype explores how GenAI can support Hong Kong primary
-        mathematics teachers in adapting materials for students with dyslexia.
-      </p>
+      <h1>{t("aboutHeading")}</h1>
+      <p className="lead">{t("aboutIntro")}</p>
       <section className="panel">
-        <h2>The educational problem</h2>
-        <p>
-          Within Hong Kong’s Whole School Approach to integrated education,
-          teachers prepare differentiated materials under time and workload
-          constraints. Generic AI tools may overlook curriculum context and
-          instructional support needs, or produce inaccurate content.
-        </p>
-        <h2>Our approach</h2>
-        <p>
-          Anonymous instructional needs guide local knowledge retrieval, a
-          pedagogy agent, a content agent and an automated review agent. The
-          mathematical objective stays the same while reading demands and task
-          presentation adapt.
-        </p>
-        <h2>Project context</h2>
-        <p>
-          EdUHK · EDS6019 – AI for Teaching and Learning
-          <br />
-          Group 8 – AI for SEN
-        </p>
-        <h2>Scope and limitations</h2>
-        <p>
-          This is an educational prototype with a limited curated knowledge base
-          and no formal classroom evaluation. It does not diagnose dyslexia,
-          assess SEN or create IEPs. AI may make errors. All output requires
-          teacher review.
-        </p>
-        <h2>Privacy</h2>
-        <p>
-          Use instructional support needs only. Do not enter student names,
-          identification numbers, medical information, diagnostic reports, or
-          other personally identifiable information. Inputs are sent to the
-          configured AI provider for generation; its data-handling terms apply.
-          The application has no database or saved student profiles.
-        </p>
-        <h2>Knowledge sources</h2>
-        <p>
-          Knowledge entries distinguish official source summaries from project
-          design principles. They do not claim official curriculum alignment
-          certification.
-        </p>
+        {(
+          [
+            ["problem", "problemBody"],
+            ["approach", "approachBody"],
+            ["languageSupport", "languageSupportBody"],
+            ["scope", "scopeBody"],
+            ["privacyHeading", "privacy"],
+            ["sources", "sourcesBody"],
+          ] as const
+        ).map(([heading, body]) => (
+          <section key={heading}>
+            <h2>{t(heading)}</h2>
+            <p>{t(body)}</p>
+            {heading === "privacyHeading" ? <p>{t("dataNotice")}</p> : null}
+          </section>
+        ))}
         <ul>
           <li>
             <a href="https://www.edb.gov.hk/en/curriculum-development/kla/ma/res/pri/index.html">
-              EDB primary mathematics resources
+              {t("mathSource")}
             </a>
           </li>
           <li>
             <a href="https://sense.edb.gov.hk/en/types-of-special-educational-needs/specific-learning-difficulties/support-measures.html">
-              EDB SENSE dyslexia support measures
+              {t("dyslexiaSource")}
             </a>
           </li>
         </ul>
+        <p>
+          EdUHK · EDS6019 – AI for Teaching and Learning · Group 8 – AI for SEN
+        </p>
       </section>
       <Link className="button" href="/create">
-        Create adapted material ↗
+        {t("createMaterial")} ↗
       </Link>
     </main>
   );

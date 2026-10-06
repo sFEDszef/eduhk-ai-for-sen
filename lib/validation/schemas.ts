@@ -29,6 +29,7 @@ export const inputSchema = z.object({
   learningObjective: z.string().trim().min(10).max(600),
   originalMaterial: z.string().trim().max(3000).default(""),
   outputType: z.enum(["worksheet", "lesson_plan", "game_activity"]),
+  outputLanguage: z.enum(["en", "zh-HK", "bilingual"]).default("en"),
   mode: z.enum(["Standard", "Enhanced Pedagogical Support"]),
   profile: z.object({
     readingSupport: level,
@@ -51,6 +52,7 @@ const base = {
   grade: z.enum(["P1", "P2", "P3"]),
   topic: z.enum(topics),
   learningObjective: text,
+  displayLearningObjective: text,
   teacherNote: text,
   differentiationNotes: list.min(1),
   pedagogicalRationale: list.min(1),
