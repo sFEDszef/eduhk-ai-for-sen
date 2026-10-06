@@ -70,7 +70,7 @@ There is no account system or durable distributed rate limit in V1. Before broad
 
 ## Deployment to Vercel
 
-Production: https://eduhk-ai-for-sen.vercel.app/
+Production: https://ai-sen.vercel.app/
 
 Private repository: https://github.com/sFEDszef/eduhk-ai-for-sen
 
@@ -97,7 +97,7 @@ Future development: expand verified official curriculum mappings, larger knowled
 - Playwright checked the production app at 1440×1000 and 390×844: home, navigation, required input, missing-key error, invalid API input, all three review renderers with test fixtures, no mobile horizontal overflow and no relevant console errors. Screenshots were inspected for layout, typography, spacing, colours and form/review readability. No AI image generation was used, as excluded from V1.
 - Client build assets contain no `AI_API_KEY`, `AI_BASE_URL` or test credential string.
 - `npm audit --omit=dev`: zero production vulnerabilities. Full audit reported five high-severity entries stemming from the ESLint tooling's `braces <=3.0.3` dependency; registry latest was still 3.0.3. No forced downgrade of Next.js tooling was applied.
-- GitHub CLI was authenticated through the signed-in browser. The private repository `https://github.com/sFEDszef/eduhk-ai-for-sen` was created and all commits were pushed to `main`; remote HEAD matched local HEAD. Vercel import and production deployment succeeded through the signed-in browser at https://eduhk-ai-for-sen.vercel.app/. `AI_PROVIDER`, `AI_MODEL` and `AI_BASE_URL` were configured for Production and Preview; `AI_API_KEY` is still awaiting configuration.
+- GitHub CLI was authenticated through the signed-in browser. The private repository `https://github.com/sFEDszef/eduhk-ai-for-sen` was created and all commits were pushed to `main`; remote HEAD matched local HEAD. Vercel import and production deployment succeeded through the signed-in browser at https://ai-sen.vercel.app/. `AI_PROVIDER`, `AI_MODEL` and `AI_BASE_URL` were configured for Production and Preview; `AI_API_KEY` is still awaiting configuration.
 - Provider protocol and error handling were tested with intercepted fetch responses. **No live LLM request has been verified**, because no API key was supplied.
 
 ### Authentication in this execution environment
@@ -122,3 +122,25 @@ Vercel CLI was checked using:
 node /tmp/eduhk-tools/package/bin/npm-cli.js exec --yes --package=vercel -- vercel whoami
 ```
 Use the same command with `login` in place of `whoami` to authenticate, then import the private GitHub repository and configure the four environment variables as described above.
+
+
+## Development milestones
+
+### v0.1 — implemented and deployed
+- Teacher UI, local RAG, three-agent architecture and structured review rendering.
+- Production deployment: https://ai-sen.vercel.app/.
+- Private GitHub repository remains `sFEDszef/eduhk-ai-for-sen`.
+
+### v0.2 — Live AI Integration (pending; not released)
+Real LLM generation, production end-to-end output, automated review and mathematical accuracy remain **unverified** until an API key is supplied and the fixed acceptance case passes. Do not treat mocked provider tests as live evidence.
+
+## ai-sen rename and live-validation preparation (6 October 2026)
+The existing Vercel project was renamed to `ai-sen`; its project ID, GitHub integration and deployment history were preserved. This directory is now linked to that existing project. `ai-sen.vercel.app` was connected to Production and verified in the browser. The original `eduhk-ai-for-sen.vercel.app` alias remains available.
+
+Production variable metadata showed `AI_PROVIDER`, `AI_MODEL`, and `AI_BASE_URL` configured; `AI_API_KEY` was missing. No secret values were displayed. Add the key yourself in [Vercel Environment Variables](https://vercel.com/sfedszef/ai-sen/settings/environment-variables), select Production, Preview and Development, and redeploy before live testing. Never paste the key into a chat or commit it. Both `.env.local` and `.vercel/` remain ignored.
+
+The fixed acceptance case was submitted on the new production domain; it returned the expected missing-key configuration message before any agent call. Its local retrieval metadata and the remaining acceptance checks are recorded in [docs/live-validation.md](docs/live-validation.md).
+
+The provider audit confirmed server-only calls, environment-based selection, 80-second request timeout, 6,500-token per-call cap, JSON extraction/schema validation, safe provider errors and no automatic retry loop. Input limits remain 600 characters for the objective, 3,000 for original material, and 16,000 for the request body. No accounts, database or new UI features were added.
+
+Dedicated **Regenerate**, **Edit material**, **Copy**, and **Back to Settings** buttons are not implemented in V1. Teachers can change the input fields and manually submit the existing Generate button again; generated material is not directly editable and has no dedicated copy/export action.
