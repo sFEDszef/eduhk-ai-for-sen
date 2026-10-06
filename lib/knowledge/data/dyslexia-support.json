@@ -2,28 +2,11 @@
   {
     "id": "edb-support",
     "category": "Dyslexia support",
-    "grade": [
-      "P1",
-      "P2",
-      "P3"
-    ],
-    "topic": [
-      "all"
-    ],
-    "supportType": [
-      "reading",
-      "instructions"
-    ],
-    "outputType": [
-      "worksheet",
-      "lesson_plan",
-      "game_activity"
-    ],
-    "scaffolding": [
-      "Low",
-      "Medium",
-      "High"
-    ],
+    "grade": ["P1", "P2", "P3"],
+    "topic": ["all"],
+    "supportType": ["reading", "instructions"],
+    "outputType": ["worksheet", "lesson_plan", "game_activity"],
+    "scaffolding": ["Low", "Medium", "High"],
     "content": "EDB SENSE describes adjusting teaching strategies and offering additional attention, instructions and support according to individual needs. Select adaptations based on instructional needs rather than making assumptions from a diagnosis.",
     "source": "EDB SENSE support measures",
     "provenance": "official_source_summary",
@@ -32,28 +15,11 @@
   {
     "id": "language",
     "category": "Reduced linguistic load",
-    "grade": [
-      "P1",
-      "P2",
-      "P3"
-    ],
-    "topic": [
-      "all"
-    ],
-    "supportType": [
-      "reading",
-      "instructions"
-    ],
-    "outputType": [
-      "worksheet",
-      "lesson_plan",
-      "game_activity"
-    ],
-    "scaffolding": [
-      "Low",
-      "Medium",
-      "High"
-    ],
+    "grade": ["P1", "P2", "P3"],
+    "topic": ["all"],
+    "supportType": ["reading", "instructions"],
+    "outputType": ["worksheet", "lesson_plan", "game_activity"],
+    "scaffolding": ["Low", "Medium", "High"],
     "content": "Use concise sentences and familiar words where appropriate; preserve mathematical terminology, meaning, numbers and relationships. Provide a short glossary and highlight key numbers and action words when requested.",
     "source": "Project design principle",
     "provenance": "project_design_principle"
@@ -61,27 +27,11 @@
   {
     "id": "visual",
     "category": "Visual scaffolding",
-    "grade": [
-      "P1",
-      "P2",
-      "P3"
-    ],
-    "topic": [
-      "all"
-    ],
-    "supportType": [
-      "visual"
-    ],
-    "outputType": [
-      "worksheet",
-      "lesson_plan",
-      "game_activity"
-    ],
-    "scaffolding": [
-      "Low",
-      "Medium",
-      "High"
-    ],
+    "grade": ["P1", "P2", "P3"],
+    "topic": ["all"],
+    "supportType": ["visual"],
+    "outputType": ["worksheet", "lesson_plan", "game_activity"],
+    "scaffolding": ["Low", "Medium", "High"],
     "content": "Use meaningful diagrams, number lines, counters, grouping or tables. Label units and avoid decorative clutter. Visuals support reasoning rather than reveal answers automatically.",
     "source": "Project design principle",
     "provenance": "project_design_principle"
@@ -89,28 +39,11 @@
   {
     "id": "multi",
     "category": "Multisensory learning",
-    "grade": [
-      "P1",
-      "P2",
-      "P3"
-    ],
-    "topic": [
-      "all"
-    ],
-    "supportType": [
-      "audio",
-      "manipulatives"
-    ],
-    "outputType": [
-      "worksheet",
-      "lesson_plan",
-      "game_activity"
-    ],
-    "scaffolding": [
-      "Low",
-      "Medium",
-      "High"
-    ],
+    "grade": ["P1", "P2", "P3"],
+    "topic": ["all"],
+    "supportType": ["audio", "manipulatives"],
+    "outputType": ["worksheet", "lesson_plan", "game_activity"],
+    "scaffolding": ["Low", "Medium", "High"],
     "content": "Combine visual representation with teacher-read prompts and hands-on counters when useful. Audio preference means optional teacher verbal prompts; this prototype does not generate audio.",
     "source": "Project design principle",
     "provenance": "project_design_principle"
