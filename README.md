@@ -70,6 +70,11 @@ There is no account system or durable distributed rate limit in V1. Before broad
 
 ## Deployment to Vercel
 
+Production: https://eduhk-ai-for-sen.vercel.app/
+
+Private repository: https://github.com/sFEDszef/eduhk-ai-for-sen
+
+
 1. Push this repository to a **private** GitHub repository named `eduhk-ai-for-sen`.
 2. In Vercel, choose **Add New → Project**, import that repository and accept the Next.js preset. If using this standalone repo, the root is `.`.
 3. Add `AI_PROVIDER`, `AI_MODEL`, `AI_API_KEY`, `AI_BASE_URL` to Production (and Preview if required). Keep the key secret.
@@ -92,7 +97,7 @@ Future development: expand verified official curriculum mappings, larger knowled
 - Playwright checked the production app at 1440×1000 and 390×844: home, navigation, required input, missing-key error, invalid API input, all three review renderers with test fixtures, no mobile horizontal overflow and no relevant console errors. Screenshots were inspected for layout, typography, spacing, colours and form/review readability. No AI image generation was used, as excluded from V1.
 - Client build assets contain no `AI_API_KEY`, `AI_BASE_URL` or test credential string.
 - `npm audit --omit=dev`: zero production vulnerabilities. Full audit reported five high-severity entries stemming from the ESLint tooling's `braces <=3.0.3` dependency; registry latest was still 3.0.3. No forced downgrade of Next.js tooling was applied.
-- GitHub CLI and Vercel CLI were checked: both were logged out. Repository creation/push and production deployment remain pending authentication.
+- GitHub CLI was authenticated through the signed-in browser. The private repository `https://github.com/sFEDszef/eduhk-ai-for-sen` was created and all commits were pushed to `main`; remote HEAD matched local HEAD. Vercel import and production deployment succeeded through the signed-in browser at https://eduhk-ai-for-sen.vercel.app/. `AI_PROVIDER`, `AI_MODEL` and `AI_BASE_URL` were configured for Production and Preview; `AI_API_KEY` is still awaiting configuration.
 - Provider protocol and error handling were tested with intercepted fetch responses. **No live LLM request has been verified**, because no API key was supplied.
 
 ### Authentication in this execution environment
