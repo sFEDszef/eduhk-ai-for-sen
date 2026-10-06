@@ -131,8 +131,15 @@ Use the same command with `login` in place of `whoami` to authenticate, then imp
 - Production deployment: https://ai-sen.vercel.app/.
 - Private GitHub repository remains `sFEDszef/eduhk-ai-for-sen`.
 
-### v0.2 — Live AI Integration (pending; not released)
-Real LLM generation, production end-to-end output, automated review and mathematical accuracy remain **unverified** until an API key is supplied and the fixed acceptance case passes. Do not treat mocked provider tests as live evidence.
+### v0.2 — Live AI Integration (verified)
+- Production runtime reads all four AI configuration variables.
+- DeepSeek connectivity returned HTTP 200 and `API_OK`.
+- The fixed P2 case completed real local RAG → pedagogy → content → review → teacher UI on https://ai-sen.vercel.app/.
+- Five worksheet answers were independently checked; the original `43 − 18` remained `25` and all questions retained two-digit subtraction within 100.
+- The automated review remained `review_required`; teacher review is still mandatory.
+- Temporary diagnostic routes were removed after testing.
+
+The production key is configured. It is never printed or committed. The audit found it currently scoped to Production only; Preview/Development live generation require their own configuration if wanted.
 
 ## ai-sen rename and live-validation preparation (6 October 2026)
 The existing Vercel project was renamed to `ai-sen`; its project ID, GitHub integration and deployment history were preserved. This directory is now linked to that existing project. `ai-sen.vercel.app` was connected to Production and verified in the browser. The original `eduhk-ai-for-sen.vercel.app` alias remains available.
@@ -144,3 +151,9 @@ The fixed acceptance case was submitted on the new production domain; it returne
 The provider audit confirmed server-only calls, environment-based selection, 80-second request timeout, 6,500-token per-call cap, JSON extraction/schema validation, safe provider errors and no automatic retry loop. Input limits remain 600 characters for the objective, 3,000 for original material, and 16,000 for the request body. No accounts, database or new UI features were added.
 
 Dedicated **Regenerate**, **Edit material**, **Copy**, and **Back to Settings** buttons are not implemented in V1. Teachers can change the input fields and manually submit the existing Generate button again; generated material is not directly editable and has no dedicated copy/export action.
+
+
+## Production missing-key diagnosis (6 October 2026)
+See [docs/production-ai-diagnosis.md](docs/production-ai-diagnosis.md) for the actual deployment timeline, runtime check, connectivity result, worksheet arithmetic and safe production log checks.
+
+The error originated in `lib/ai/provider.ts`: `const key = process.env.AI_API_KEY; if (!key)`. Configuration is read at request time, inside a server-only module. No alternative key name or client-side secret check was found. The recorded missing-key responses came from the old deployment while the new environment-configured deployment was still building. Current production runtime and live generation were verified successfully; no replacement key was requested and no provider switch was made.

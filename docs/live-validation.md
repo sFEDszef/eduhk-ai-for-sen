@@ -1,3 +1,5 @@
+> Historical pre-key record. Live production validation subsequently passed; see [production-ai-diagnosis.md](production-ai-diagnosis.md).
+
 # Production validation record — 6 October 2026
 
 ## Deployment and configuration
