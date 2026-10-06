@@ -6,7 +6,12 @@ export const runtime="nodejs";
 export const maxDuration=300;
 export async function POST(request:Request){
  const origin=request.headers.get("origin");
- if(origin && origin!==new URL(request.url).origin) return Response.json({error:"Cross-origin generation requests are not allowed."},{status:403});
+ // Next.js can normalise request.url to localhost behind a proxy. Compare the
+ // browser Origin with the actual Host header instead of that internal URL.
+ if(origin){
+  try {if(new URL(origin).host!==(request.headers.get("host") || new URL(request.url).host)) return Response.json({error:"Cross-origin generation requests are not allowed."},{status:403});}
+  catch {return Response.json({error:"Invalid request origin."},{status:403});}
+ }
  if(Number(request.headers.get("content-length") ?? 0)>16000) return Response.json({error:"Please keep the input brief."},{status:413});
  let raw:unknown;
  try {const body=await request.text(); if(body.length>16000) return Response.json({error:"Please keep the input brief."},{status:413}); raw=JSON.parse(body);} catch {return Response.json({error:"Please provide a valid teaching request."},{status:400});}
