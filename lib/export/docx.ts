@@ -6,9 +6,9 @@ import {
   HeadingLevel,
   PageBreak,
 } from "docx";
-import type { GenerationResult } from "@/types/generation";
+import type { ExportResult } from "./types";
 import { exportBlocks } from "./content";
-export function createDocument(result: GenerationResult): Document {
+export function createDocument(result: ExportResult): Document {
   const heading = {
     title: HeadingLevel.TITLE,
     heading: HeadingLevel.HEADING_1,
@@ -88,9 +88,9 @@ export function createDocument(result: GenerationResult): Document {
     ],
   });
 }
-export function docxBlob(result: GenerationResult): Promise<Blob> {
+export function docxBlob(result: ExportResult): Promise<Blob> {
   return Packer.toBlob(createDocument(result));
 }
-export function docxBuffer(result: GenerationResult): Promise<Buffer> {
+export function docxBuffer(result: ExportResult): Promise<Buffer> {
   return Packer.toBuffer(createDocument(result));
 }

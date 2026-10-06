@@ -200,3 +200,22 @@ test("Chinese and bilingual outputs reject English-only student questions", () =
   );
   checkMaterialLanguage(input, material);
 });
+
+test("Chinese-only mode rejects an English problem followed by a Chinese line", () => {
+  const material = materialSchema.parse({
+    ...worksheet,
+    title: "減法工作紙",
+    displayLearningObjective: "解答兩位數減法應用題。",
+    studentInstructions: "閱讀題目。",
+    questions: worksheet.questions.map((q) => ({
+      ...q,
+      question:
+        "Amy has 23 stickers. She gives 8 stickers to Ben. How many are left?\nAmy 有 23 張貼紙，送出 8 張，剩下多少張？",
+    })),
+  });
+  assert.throws(
+    () =>
+      checkMaterialLanguage({ ...input, outputLanguage: "zh-HK" }, material),
+    /output language/,
+  );
+});

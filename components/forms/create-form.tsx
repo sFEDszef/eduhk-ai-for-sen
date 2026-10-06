@@ -38,6 +38,7 @@ export default function CreateForm() {
   const [stage, setStage] = useState<Stage>("Understanding teaching needs…");
   const [error, setError] = useState<TranslationKey | null>(null);
   const [result, setResult] = useState<GenerationResult | null>(null);
+  const [revision, setRevision] = useState(0);
   const [showSettings, setShowSettings] = useState(true);
   const formRef = useRef<HTMLFormElement>(null);
   const reviewRef = useRef<HTMLDivElement>(null);
@@ -79,6 +80,7 @@ export default function CreateForm() {
         if (data.event === "error") throw new Error(data.error);
         if (data.event === "result") {
           setResult(data.result);
+          setRevision((value) => value + 1);
           setShowSettings(false);
           finished = true;
           requestAnimationFrame(() =>
@@ -320,6 +322,7 @@ export default function CreateForm() {
       <div ref={reviewRef} tabIndex={-1}>
         {result ? (
           <ReviewPanel
+            key={revision}
             result={result}
             busy={busy}
             stage={stage}

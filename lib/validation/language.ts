@@ -22,6 +22,8 @@ export function checkMaterialLanguage(
     fields.some(
       (value) =>
         !/[\u3400-\u9fff]/u.test(value) ||
+        (input.outputLanguage === "zh-HK" &&
+          /[a-z]{2,}(?:[ ]+[a-z]{2,}){2,}/i.test(value)) ||
         (input.outputLanguage === "bilingual" && !/[a-z]/i.test(value)),
     )
   )

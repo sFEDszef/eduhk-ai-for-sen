@@ -3,7 +3,6 @@ import { useRef, useState } from "react";
 import type { GenerationResult, Material, Stage } from "@/types/generation";
 import { useLanguage } from "@/components/i18n/language-provider";
 import { gameFields, lessonFields, plainText } from "@/lib/export/content";
-import { materialFilename } from "@/lib/export/filename";
 import type { TranslationKey } from "@/lib/i18n";
 function List({ items }: { items: readonly string[] }) {
   return (
@@ -138,16 +137,23 @@ export default function ReviewPanel({
     setExporting(true);
     setFeedback(null);
     try {
-      const { docxBlob } = await import("@/lib/export/docx");
-      const blob = await docxBlob(result);
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = materialFilename(input);
-      document.body.append(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 30000);
+      const form = document.createElement("form");
+      form.method = "POST";
+      form.action = "/api/export/docx";
+      form.hidden = true;
+      const field = document.createElement("input");
+      field.type = "hidden";
+      field.name = "draft";
+      field.value = JSON.stringify({
+        input: result.input,
+        material: result.material,
+        review: result.review,
+      });
+      form.append(field);
+      document.body.append(form);
+      form.submit();
+      form.remove();
+      await new Promise<void>((resolve) => setTimeout(resolve, 1000));
     } catch {
       setFeedback("exportError");
     } finally {

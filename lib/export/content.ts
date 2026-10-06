@@ -1,4 +1,4 @@
-import type { GenerationResult } from "@/types/generation";
+import type { ExportResult } from "./types";
 import { translate, label, type TranslationKey } from "@/lib/i18n";
 export type ExportBlock = {
   text: string;
@@ -31,7 +31,7 @@ export const gameFields = [
   "immediateFeedbackExamples",
   "extension",
 ] as const;
-export function exportBlocks(result: GenerationResult): ExportBlock[] {
+export function exportBlocks(result: ExportResult): ExportBlock[] {
   const { input, material: m, review } = result;
   const blocks: ExportBlock[] = [];
   const name = (key: TranslationKey) =>
@@ -108,7 +108,7 @@ export function exportBlocks(result: GenerationResult): ExportBlock[] {
   add(name("teacherReview"));
   return blocks;
 }
-export function plainText(result: GenerationResult): string {
+export function plainText(result: ExportResult): string {
   return exportBlocks(result)
     .map((b) => (b.kind === "break" ? "\n" : b.text))
     .join("\n\n");
