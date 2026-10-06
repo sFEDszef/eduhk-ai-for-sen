@@ -14,7 +14,8 @@ export function createDocument(result: ExportResult): Document {
     heading: HeadingLevel.HEADING_1,
     subheading: HeadingLevel.HEADING_2,
   } as const;
-  const paragraphs = exportBlocks(result).map((block) =>
+  const blocks = exportBlocks(result);
+  const paragraphs = blocks.map((block, blockIndex) =>
     block.kind === "break"
       ? new Paragraph({ children: [new PageBreak()] })
       : new Paragraph({
@@ -23,9 +24,17 @@ export function createDocument(result: ExportResult): Document {
             .split("\n")
             .map(
               (line, index) =>
-                new TextRun({ text: line, break: index ? 1 : undefined }),
+                new TextRun({
+                  text: line,
+                  break: index ? 1 : undefined,
+                  size: blockIndex === blocks.length - 1 ? 20 : undefined,
+                }),
             ),
-          spacing: { after: 160, line: 320 },
+          spacing:
+            blockIndex === blocks.length - 1
+              ? { after: 0, line: 240 }
+              : { after: 160, line: 320 },
+          keepLines: blockIndex === blocks.length - 1,
           keepNext: block.kind !== "body",
           widowControl: true,
         }),

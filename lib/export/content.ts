@@ -47,8 +47,7 @@ export function exportBlocks(result: ExportResult): ExportBlock[] {
   };
   add(m.title, "title");
   add("EdUHK · AI for SEN");
-  add(name("draft"));
-  add(name("teacherReview"));
+  add(`${name("draft")}\n${name("teacherReview")}`);
   add(
     `${name("grade")}: ${label(input.outputLanguage === "zh-HK" ? "zh-HK" : "en", m.grade)}`,
   );
@@ -104,8 +103,7 @@ export function exportBlocks(result: ExportResult): ExportBlock[] {
   });
   section("warnings", review.warnings);
   section("suggestions", review.suggestions);
-  add(name("draft"));
-  add(name("teacherReview"));
+  add(`${name("draft")}\n${name("teacherReview")}`);
   return blocks;
 }
 export function plainText(result: ExportResult): string {
