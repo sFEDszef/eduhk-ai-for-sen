@@ -1,6 +1,7 @@
 import type { AIProvider } from "@/lib/ai/types";
 import { GenerationError } from "@/lib/ai/types";
 import type { TeacherInput, Stage, GenerationResult } from "@/types/generation";
+import { checkMaterialLanguage } from "@/lib/validation/language";
 import { checkOriginalSubtraction } from "@/lib/validation/math";
 import { inputSchema } from "@/lib/validation/schemas";
 import { retrieveKnowledge } from "@/lib/knowledge/retrieval";
@@ -39,6 +40,7 @@ export async function orchestrate(
       "The draft contained duplicate question identifiers. Please try again.",
     );
   checkOriginalSubtraction(input, material);
+  checkMaterialLanguage(input, material);
   onStage("Reviewing the draft…");
   const review = await reviewAgent(ai, input, knowledge, material);
   const notices =

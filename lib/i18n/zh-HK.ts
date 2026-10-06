@@ -1,6 +1,7 @@
 import type { Dictionary } from "./en";
 export const zhHK = {
   interfaceLanguage: "介面語言",
+  languageMismatch: "草稿未有一致使用所選教材語言，請再試一次。",
   brand: "共融數學",
   about: "關於計劃",
   create: "建立教材",

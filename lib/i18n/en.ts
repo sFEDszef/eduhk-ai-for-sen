@@ -1,5 +1,7 @@
 export const en = {
   interfaceLanguage: "Interface language",
+  languageMismatch:
+    "The draft did not use the selected output language consistently. Please try again.",
   brand: "Inclusive Maths",
   about: "About the project",
   create: "Create material",

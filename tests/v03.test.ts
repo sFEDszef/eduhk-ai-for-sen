@@ -5,6 +5,7 @@ import { en } from "../lib/i18n/en";
 import { zhHK } from "../lib/i18n/zh-HK";
 import { translate } from "../lib/i18n";
 import { orchestrate } from "../lib/agents/orchestrator";
+import { checkMaterialLanguage } from "../lib/validation/language";
 import { checkOriginalSubtraction } from "../lib/validation/math";
 import { docxBuffer } from "../lib/export/docx";
 import { plainText } from "../lib/export/content";
@@ -47,7 +48,33 @@ for (const outputLanguage of ["en", "zh-HK", "bilingual"] as const) {
           const data = context as { teacherInput: typeof input };
           assert.equal(data.teacherInput.outputLanguage, outputLanguage);
           assert.match(system, /Traditional Chinese/);
-          return schema.parse([plan, worksheet, review][calls++]);
+          const translated =
+            outputLanguage === "en"
+              ? worksheet
+              : {
+                  ...worksheet,
+                  title:
+                    outputLanguage === "zh-HK"
+                      ? "減法工作紙"
+                      : "Subtraction 減法工作紙",
+                  displayLearningObjective:
+                    outputLanguage === "zh-HK"
+                      ? "學生能解答兩位數減法應用題。"
+                      : "Two-digit subtraction 兩位數減法應用題",
+                  studentInstructions:
+                    outputLanguage === "zh-HK"
+                      ? "閱讀題目。"
+                      : "Read the question.\n閱讀題目。",
+                  questions: worksheet.questions.map((q) => ({
+                    ...q,
+                    question:
+                      outputLanguage === "zh-HK"
+                        ? "有 23 張貼紙，送出 8 張，剩下多少張？"
+                        : q.question +
+                          "\n有 23 張貼紙，送出 8 張，剩下多少張？",
+                  })),
+                };
+          return schema.parse([plan, translated, review][calls++]);
         },
       },
     );
@@ -154,4 +181,22 @@ test("cross-language guard rejects changed original quantities and incorrect ans
       }),
     /changed/,
   );
+});
+
+test("Chinese and bilingual outputs reject English-only student questions", () => {
+  const material = materialSchema.parse(worksheet);
+  assert.throws(
+    () =>
+      checkMaterialLanguage({ ...input, outputLanguage: "zh-HK" }, material),
+    /output language/,
+  );
+  assert.throws(
+    () =>
+      checkMaterialLanguage(
+        { ...input, outputLanguage: "bilingual" },
+        material,
+      ),
+    /output language/,
+  );
+  checkMaterialLanguage(input, material);
 });

@@ -16,6 +16,7 @@ export function label(language: UILanguage, value: string): string {
   return value in en ? translate(language, value as TranslationKey) : value;
 }
 export function errorKey(message: string): TranslationKey {
+  if (/output language/.test(message)) return "languageMismatch";
   if (/key|configuration|administrator/i.test(message)) return "configError";
   if (/objective|lesson details|mathematical quantities/.test(message))
     return "objectiveMismatch";
