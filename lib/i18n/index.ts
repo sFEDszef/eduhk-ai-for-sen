@@ -1,13 +1,15 @@
 import { en, type TranslationKey } from "./en";
 import { zhHK } from "./zh-HK";
-export type UILanguage = "en" | "zh-HK";
+import { zhCN } from "./zh-CN";
+export type UILanguage = "en" | "zh-HK" | "zh-CN";
+const dictionaries = { en, "zh-HK": zhHK, "zh-CN": zhCN };
 export type { TranslationKey } from "./en";
 export function translate(
   language: UILanguage,
   key: TranslationKey,
   params: Record<string, string | number> = {},
 ): string {
-  let value: string = (language === "zh-HK" ? zhHK : en)[key];
+  let value: string = dictionaries[language][key];
   for (const [name, replacement] of Object.entries(params))
     value = value.replaceAll(`{${name}}`, String(replacement));
   return value;

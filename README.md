@@ -65,7 +65,7 @@ Teacher input → Zod validation → learner support profile → local RAG → p
 
 Interface: **English / 繁體中文**. Generated materials: **English / 繁體中文 / Bilingual**.
 
-`lib/i18n/en.ts` and `zh-HK.ts` provide matching typed dictionaries. A lightweight React context translates navigation, pages, labels, helper text, privacy notices, loading stages, errors and review controls. The header language choice is persisted under the versioned localStorage key `ai-sen.ui-language.v1`; blocked storage does not prevent switching. No teaching input or generated draft is persisted.
+`lib/i18n/en.ts`, `zh-HK.ts` and `zh-CN.ts` provide matching typed dictionaries for English, Traditional Chinese and Simplified Chinese interfaces. A lightweight React context translates navigation, pages, labels, helper text, privacy notices, loading stages, errors and review controls. The header language choice is persisted under the versioned localStorage key `ai-sen.ui-language.v1`; blocked storage does not prevent switching. No teaching input or generated draft is persisted.
 
 The separate form field `outputLanguage` accepts `en`, `zh-HK` or `bilingual`; legacy requests default to `en`. It passes through the request schema and each agent's `teacherInput`. Prompts require British English, Hong Kong Traditional Chinese, or concise English instructions with Traditional Chinese support lines and paired vocabulary. Numbers, operations, quantities, relationships and answers must remain unchanged.
 

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import { inputSchema, materialSchema } from "../lib/validation/schemas";
 import { en } from "../lib/i18n/en";
 import { zhHK } from "../lib/i18n/zh-HK";
+import { zhCN } from "../lib/i18n/zh-CN";
 import { translate } from "../lib/i18n";
 import { orchestrate } from "../lib/agents/orchestrator";
 import { checkMaterialLanguage } from "../lib/validation/language";
@@ -13,16 +14,21 @@ import { materialFilename, sanitizeFilename } from "../lib/export/filename";
 import { input, plan, worksheet, lesson, game, review } from "./fixtures";
 import type { GenerationResult } from "../types/generation";
 import JSZip from "jszip";
-test("English and Hong Kong Traditional Chinese dictionaries cover every interface key", () => {
+test("English, Traditional Chinese and Simplified Chinese dictionaries cover every interface key", () => {
   assert.deepEqual(Object.keys(en).sort(), Object.keys(zhHK).sort());
+  assert.deepEqual(Object.keys(en).sort(), Object.keys(zhCN).sort());
   for (const key of Object.keys(en) as (keyof typeof en)[]) {
     assert.ok(en[key].trim());
     assert.ok(zhHK[key].trim());
+    assert.ok(zhCN[key].trim());
   }
   assert.equal(translate("en", "generate"), "Generate teaching draft");
   assert.equal(translate("zh-HK", "generate"), "生成教學草稿");
   assert.equal(translate("zh-HK", "worksheet"), "工作紙");
   assert.match(translate("en", "more", { count: 3 }), /3 more/);
+  assert.equal(translate("zh-CN", "generate"), "生成教学草稿");
+  assert.equal(translate("zh-CN", "privacyHeading"), "隐私");
+  assert.equal(translate("zh-CN", "more", { count: 3 }), "完整文件另有 3 道题目");
 });
 test("outputLanguage validates three values, rejects unsupported languages and defaults legacy requests to English", () => {
   for (const outputLanguage of ["en", "zh-HK", "bilingual"])

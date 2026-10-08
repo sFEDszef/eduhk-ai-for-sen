@@ -137,7 +137,7 @@ export const en = {
     "This prototype has a limited curated knowledge base and no formal classroom evaluation. It does not diagnose dyslexia, assess SEN or create IEPs. AI may make errors. All output requires teacher review.",
   languageSupport: "Language support",
   languageSupportBody:
-    "The interface supports English and Traditional Chinese. Materials support English, Traditional Chinese and bilingual output. Interface and output languages are independent. DOCX exports use the generated draft without another AI call.",
+    "The interface supports English, Traditional Chinese and Simplified Chinese. Materials support English, Traditional Chinese and bilingual output. Interface and output languages are independent. DOCX exports use the generated draft without another AI call.",
   sources: "Knowledge sources",
   sourcesBody:
     "Entries distinguish official source summaries from project design principles. They do not certify curriculum alignment.",

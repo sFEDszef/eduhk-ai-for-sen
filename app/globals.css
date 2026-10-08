@@ -966,8 +966,8 @@ dd {
 .student-directions {
   white-space: pre-wrap;
 }
-html[lang="zh-HK"] h1,
-html[lang="zh-HK"] h2 {
+html[lang^="zh-"] h1,
+html[lang^="zh-"] h2 {
   letter-spacing: 0;
   line-height: 1.35;
 }
@@ -994,7 +994,7 @@ html[lang="zh-HK"] h2 {
 .workflow h2,
 .closing h2,
 .narrow h1 {
-  font-family: Georgia, "Songti TC", "PMingLiU", serif;
+  font-family: Georgia, "Songti TC", "Songti SC", "PMingLiU", serif;
   font-weight: 400;
   letter-spacing: -0.035em;
 }
@@ -1035,5 +1035,5 @@ textarea, select { background: var(--paper); }
   .button { transition: none; }
 }
 @media (max-width: 760px) {
-  html[lang="zh-HK"] .hero h1 { font-size: clamp(28px, 8.2vw, 32px); }
+  html[lang^="zh-"] .hero h1 { font-size: clamp(28px, 8.2vw, 32px); }
 }

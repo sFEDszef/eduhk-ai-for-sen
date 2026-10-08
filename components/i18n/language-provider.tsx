@@ -24,7 +24,8 @@ const subscribe = (callback: () => void) => {
 };
 function snapshot(): UILanguage {
   try {
-    return localStorage.getItem(storageKey) === "zh-HK" ? "zh-HK" : "en";
+    const stored = localStorage.getItem(storageKey);
+    return stored === "zh-HK" || stored === "zh-CN" ? stored : "en";
   } catch {
     return "en";
   }
@@ -89,6 +90,15 @@ export function LanguageSwitch() {
         onClick={() => setLanguage("zh-HK")}
       >
         繁中
+      </button>
+      <span aria-hidden="true">|</span>
+      <button
+        type="button"
+        lang="zh-CN"
+        aria-pressed={language === "zh-CN"}
+        onClick={() => setLanguage("zh-CN")}
+      >
+        简中
       </button>
     </div>
   );
