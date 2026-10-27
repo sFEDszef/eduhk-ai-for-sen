@@ -1,15 +1,15 @@
 @import "tailwindcss";
 :root {
-  --ink: #eeeae1;
-  --muted: #b0afa6;
-  --accent: #c5aa72;
-  --pale: #21241f;
-  --line: #3b382e;
-  --paper: #101211;
-  --amber: #2b2418;
-  --surface: #191c19;
-  --accent-ink: #101211;
-  color-scheme: dark;
+  --ink: #20352f;
+  --muted: #59675f;
+  --accent: #28604b;
+  --pale: #f3f7f4;
+  --line: #dce5df;
+  --paper: #ffffff;
+  --amber: #fff8e7;
+  --surface: #ffffff;
+  --accent-ink: #ffffff;
+  color-scheme: light;
 }
 * {
   box-sizing: border-box;
@@ -52,7 +52,7 @@ input:focus-visible,
 select:focus-visible,
 textarea:focus-visible,
 summary:focus-visible {
-  outline: 3px solid #c5aa72;
+  outline: 3px solid #28604b;
   outline-offset: 4px;
 }
 .skip {
@@ -126,7 +126,7 @@ nav > a:first-child {
   line-height: 1.5;
 }
 .button:hover {
-  background: #d8bc87;
+  background: #1d4c3b;
 }
 .button.small {
   padding: 11px 17px;
@@ -208,7 +208,7 @@ h4 {
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 8px;
-  box-shadow: 0 18px 45px #00000026;
+  box-shadow: 0 18px 45px #193b320a;
   overflow: hidden;
   transform: none;
 }
@@ -252,7 +252,7 @@ small {
 }
 .example-question strong {
   font-weight: 700;
-  background: #303024;
+  background: #e8f0e9;
   padding: 1px 5px;
 }
 .example-question ol {
@@ -315,12 +315,12 @@ small {
   margin: 40px 0 0;
 }
 .workflow li {
-  border-top: 1px solid #63583e;
+  border-top: 1px solid #a6bcae;
   padding-top: 17px;
 }
 .workflow li > span {
   font-family: Georgia, serif;
-  color: #c5aa72;
+  color: #28604b;
   font-size: 26px;
 }
 .workflow h3 {
@@ -375,7 +375,7 @@ footer {
 }
 .teacher-principle {
   font-size: 18px;
-  border-left: 1px solid #63583e;
+  border-left: 1px solid #a6bcae;
   padding-left: 24px;
 }
 .form-layout {
@@ -390,7 +390,7 @@ footer {
   border-radius: 9px;
   padding: 28px;
   margin-bottom: 24px;
-  box-shadow: 0 3px 9px #00000010;
+  box-shadow: 0 3px 9px #193b3203;
 }
 .form-section-heading {
   display: flex;
@@ -426,7 +426,7 @@ textarea,
 select {
   width: 100%;
   display: block;
-  border: 1px solid #716951;
+  border: 1px solid #82998b;
   border-radius: 5px;
   padding: 12px;
   margin-top: 8px;
@@ -439,7 +439,7 @@ textarea {
   line-height: 1.65;
 }
 textarea::placeholder {
-  color: #aaa99e;
+  color: #66756d;
 }
 select {
   min-height: 46px;
@@ -451,7 +451,7 @@ label > .muted,
   margin-left: 8px;
 }
 .required {
-  color: #c5aa72;
+  color: #28604b;
 }
 .two-columns {
   display: grid;
@@ -468,7 +468,7 @@ label > .muted,
   font-size: 12px;
   line-height: 1.65;
   background: var(--pale);
-  border-left: 3px solid #c5aa72;
+  border-left: 3px solid #28604b;
   padding: 14px 17px;
   margin-bottom: 25px;
 }
@@ -520,7 +520,7 @@ input[type="radio"] {
 }
 .radio-option:has(input:checked) {
   background: var(--pale);
-  border-color: #c5aa72;
+  border-color: #28604b;
 }
 .radio-option small {
   display: block;
@@ -543,9 +543,9 @@ input[type="radio"] {
 }
 .error {
   padding: 15px;
-  border: 1px solid #9f695a;
-  background: #2c1d1a;
-  color: #f0b8a8;
+  border: 1px solid #c47c6a;
+  background: #fff1ed;
+  color: #963b28;
   margin-top: 15px;
   font-size: 13px;
   border-radius: 5px;
@@ -591,7 +591,7 @@ input[type="radio"] {
 }
 .review-warning {
   background: var(--amber);
-  border: 1px solid #867044;
+  border: 1px solid #d9bd7d;
   padding: 24px 28px;
   border-radius: 9px;
   margin-bottom: 24px;
@@ -988,7 +988,7 @@ html[lang^="zh-"] h2 {
   }
 }
 
-/* Shared black and champagne-gold theme across the teaching workflow. */
+/* Shared bright white and soft green theme across the teaching workflow. */
 .hero h1,
 .principle h2,
 .workflow h2,
@@ -1010,7 +1010,7 @@ html[lang^="zh-"] h2 {
   transition: background-color 160ms ease, border-color 160ms ease;
 }
 .button.secondary:hover {
-  background: #303024;
+  background: #e8f0e9;
   border-color: var(--accent);
 }
 .text-link, .equation span, .form-section-heading > span,
@@ -1020,7 +1020,7 @@ html[lang^="zh-"] h2 {
   border-bottom: 1px solid var(--line);
 }
 textarea, select { background: var(--paper); }
-.radio-option:hover { border-color: #716951; }
+.radio-option:hover { border-color: #82998b; }
 .radio-option:has(input:checked) { border-color: var(--accent); }
 ::selection { background: var(--accent); color: var(--accent-ink); }
 @media (max-width: 760px) {
